@@ -1,0 +1,276 @@
+
+//primeng table css
+:host ::ng-deep .ui-table-customers {
+    // height: 100vh;;
+    //box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+ .ui-sortable-column .ui-sortable-column-icon {
+        color: #fff;
+    }
+  p-sorticon {
+        vertical-align: middle;
+        font-size: 8px !important;
+    }
+    .customer-badge {
+        border-radius: 2px;
+        padding: .25em .5em;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: .3px;
+    
+        &.status-active {
+            background-color: #30b914;
+            color: #ffffff;
+            width:100px;
+        }
+
+        &.status-inactive {
+            background-color: #e42032;
+            color: #ffffff;
+            width:100px;
+        }
+
+        &.status-qualified {
+            background-color: #C8E6C9;
+            color: #256029;
+        }
+    
+        &.status-unqualified {
+            background-color: #FFCDD2;
+            color: #C63737;
+        }
+    
+        &.status-negotiation {
+            background-color: #FEEDAF;
+            color: #8A5340;
+        }
+    
+        &.status-new {
+            background-color: #B3E5FC;
+            color: #23547B;
+        }
+    
+        &.status-renewal {
+            background-color: #ECCFFF;
+            color: #694382;
+        }
+    
+        &.status-proposal {
+            background-color: #FFD8B2;
+            color: #805B36;
+        }
+    }
+    
+    .flag {
+        vertical-align: middle;
+        width: 30px;
+        height: 20px;
+    }
+
+    .ui-multiselect-representative-option {
+        display: inline-block;
+        vertical-align: middle;
+
+        img {
+            vertical-align: middle;
+            width: 24px;
+        }
+
+        span {
+            margin-top: .125em;
+            vertical-align: middle; 
+            margin-left: .5em
+        }
+    }
+
+    .ui-paginator {
+        .ui-dropdown {
+            float: left;
+        }
+    
+        .ui-paginator-current {
+            float: right;
+        }
+    }
+
+    .ui-progressbar {
+        height: 8px;
+        background-color: #D8DADC;
+    
+        .ui-progressbar-value {
+            background-color: #00ACAD;
+        }
+    }
+
+    .ui-column-filter {
+        display: block;
+    
+        input {
+            width: 100%;
+        }
+    }
+
+    .ui-table-globalfilter-container {
+        float: right;
+        position: relative;
+    float: right;
+    top: -28px;
+    
+        input {
+            width: 200px;
+        }
+    }
+
+    .ui-datepicker {
+        min-width: 25em;
+    
+        td {
+            font-weight: 400;
+        }
+    }
+
+    .ui-table-caption {
+        border: 0 none;
+        padding: 0 35px 0 25px;
+        text-align: left;
+        font-size: 18px;
+    }
+
+    .ui-paginator {
+        border: 0 none;
+        padding: 1em;
+    }
+    .table-header{
+        background: #fff;
+        padding:7px 29px 30px 10px;
+    }
+    .ui-table-wrapper{
+        background: #f4f4f4;
+        padding: 0px 35px 30px 25px;
+    }
+    .ui-table-thead > tr > th {
+        border: 0 none;
+        // text-align: left;
+        text-align: center;
+
+        &.ui-filter-column {
+            border-top: 1px solid #c8c8c8;
+        }
+
+        &:first-child {
+            // width: 5em;
+            text-align: center;
+        }
+
+        // &:last-child {
+            // width: 8em;
+            // text-align: center;
+        // }
+    }
+
+    .ui-table-tbody > tr > td {
+        border: 0 none;
+        cursor: auto;
+        text-align: center;
+
+        &:first-child {
+            // width: 3em;
+            text-align: center;
+        }
+
+        // &:last-child {
+            // width: 8em;
+            // text-align: center;
+        // }
+    }
+
+    .ui-dropdown-label:not(.ui-placeholder) {
+        text-transform: uppercase;
+    }
+
+    .ui-table-tbody > tr > td .ui-column-title {
+        display: none;
+    }
+
+    .ui-table-thead > tr > th {
+        padding: 0.571em 0.857em;
+        font-weight: 400;
+        color: #f8f9fa;
+        background-color: #0033A1;
+        font-size: 0.95em;
+    }
+}
+
+.edit{
+    color: #f8f9fa;
+    background-color: #0088a9;
+}
+.delete{
+    color: #f8f9fa;
+    background-color: #007792;
+}
+.fab{
+    background-color: #28a745;
+}
+ion-fab-button {
+    button{
+        background-color: green;;
+    }
+}
+.linkClass{
+    text-decoration: underline;
+    color: #007bff;
+    cursor: pointer;
+}
+.centreClass{
+    display: grid;
+    place-items: center; 
+}
+
+.gradientClass{
+    --background: linear-gradient(
+        to bottom,
+        var(--ion-color-gradient) 0%,
+        var(--ion-color-gradient-contrast) 100%
+    );
+}
+.inputWrapper{
+    width: 110px;
+    height: 42px;
+// background: red;    
+}
+
+.backInputClass{
+    display: grid;
+    place-items: center;
+    height: 28px;
+    width: 100%;
+    top: 9px;
+    // background: yellow;
+    background:#0033a1;
+    color: white !important;
+    position: relative;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+}
+.backInputClassView{
+  
+    // width: 100px !important;
+    width: 65px !important;
+   
+}
+.inputActual{
+    width: 100%;
+    background: transparent;
+    z-index: 1000;
+    position: relative;
+    top: -18px;
+    opacity: 0;
+}
+.cap{
+    text-align: right !important;
+}
+.plainClass{
+    --backgroud: white;
+}

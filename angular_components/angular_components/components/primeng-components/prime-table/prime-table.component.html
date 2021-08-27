@@ -1,0 +1,651 @@
+<!-- <ion-content class="ion-padding"> -->
+    <!-- "appConfigService.getPlatformMobile() &&  showActionsAdd" -->
+<ion-fab [vertical]=" 'bottom'" horizontal="end" slot="fixed"
+    *ngIf="showActionsAdd">
+    <ion-fab-button (click)="add()" class="" color="secondary">
+        <!-- {{showActionsAddLabel}} -->
+        <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+<!-- selectionMode="single" -->
+<!-- {{tableData | json}} -->
+<!-- {{tableSelectedValue | json}} -->
+
+<p-table #dt *ngIf="tableData != undefined" [columns]="tableMetaData" [value]="tableData"
+    [(selection)]="tableSelectedValue" dataKey="id" styleClass="ui-table-customers" [rowHover]="true" [rows]="rows"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="rowsPerPageOptions" [loading]="loading" [paginator]="paginator"
+    currentPageReportTemplate="Showing &#123;first&#125; to &#123;last&#125; of &#123;totalRecords&#125; entries"
+    [filterDelay]="0" [globalFilterFields]="tableGlobalFilterFields" (onRowSelect)="onRowSelect($event)"
+    (onRowUnselect)="onRowUnselect($event)">
+    <ng-template pTemplate="caption">
+            <ion-row *ngIf="showTableName" style="padding-top:15px; padding-bottom:15px;">
+            <ion-col size="6">
+                    <span style="color: #383838;
+                    font-family: Segoe UI Semibold;    position: relative;
+                    top: 7px;">{{tableTitle | uppercase}} </span>
+          
+            </ion-col>
+            <ion-col size="6" class="ion-text-end">
+            <div *ngIf="showSearchBar" style="display: -webkit-inline-box;">
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Global Search" style="    height: 36px;
+                    border-radius: 0px;
+                    padding-top: 4px;
+                    margin-right: 5px;" />
+
+
+
+            </div>         
+          
+            <!-- </ion-col>
+            <ion-col size="2" class="ion-text-end"> -->
+<div style="display: -webkit-inline-box;">
+    <ion-button *ngIf="downloadData.length > 0" (click)="exportExcel()" style="top: -5px;
+            position: relative;" >
+        <ion-icon slot="start" name="download-outline"></ion-icon>
+        Export
+    </ion-button>
+        <!-- <button *ngIf="downloadData.length > 0" style="padding-left: 5%" 
+                type="button" pButton pRipple icon="pi pi-file-excel"
+                 (click)="exportExcel()" class="p-button-success p-mr-2" 
+                  pTooltip="XLS" tooltipPosition="bottom"><span>Export</span></button> -->
+</div>
+            </ion-col>
+            </ion-row>
+            <ion-row>
+                    <div *ngIf="showCustomFilter">
+                            <ion-grid>
+                                <ion-row>
+                                    <div [ngStyle]="{'padding-top': showTableName ? '0' : '10px' }" style="padding-bottom: 10px;
+                                    color: #2f3592;
+                                    font-size: 15px;">
+                Search by any of the following fields
+                </div>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col size="11">
+                                        <ion-row>
+                                            <ion-col size="4"  *ngFor="let customfilter of customFilterData ;let c = index;">
+                                                <div style="font-size: 0.70em; margin-bottom:5px; font-family: 'Segoe UI'; font-weight:400;">
+                                                    {{customfilter.title }} 
+                                                </div>
+                                                <div *ngIf="customfilter.type == 'text' ">
+                                                    <!-- [placeholder]="'ENTER_TEXT_PLACEHOLDER' | translate" -->
+                                                    <!-- placeholder="Enter Text e.g 2489" -->
+                                                    <!-- test {{customfilter.value}} -->
+                                                    <ion-input 
+                                                    [type]="customfilter.inputType == undefined ? 'text' : customfilter.inputType"
+                                                    [maxlength]="customfilter.maxlength == undefined ? '20' : customfilter.maxlength"
+                                                    (ionInput)="customInputChange($event,customfilter)"
+                                                        style="    height: 40px;
+                                                        font-size: 0.75em;
+                                                        border-radius: 0px;
+                                                        width:80%;
+                                                        font-family: 'Segoe UI Semibold';"
+             [placeholder]="customfilter.placeholder != undefined ? customfilter.placeholder : 'ENTER_TEXT_PLACEHOLDER' | translate"
+                                                        >
+                                                    </ion-input>
+                                                </div>
+                                                <div *ngIf="customfilter.type == 'number' ">
+                                                    <!-- [placeholder]="'ENTER_TEXT_PLACEHOLDER' | translate" -->
+                                                    <!-- placeholder="Enter Text e.g 2489" -->
+                                                    <!-- test {{customfilter.value}} -->
+                                                    <ion-input 
+                                                    integerOnly
+                                                    [maxlength]="customfilter.maxlength == undefined ? '20' : customfilter.maxlength"
+                                                    (ionInput)="customInputChange($event,customfilter)"
+                                                        style="    height: 40px;
+                                                        font-size: 0.75em;
+                                                        border-radius: 0px;
+                                                        width:80%;
+                                                        font-family: 'Segoe UI Semibold';"
+             [placeholder]="customfilter.placeholder != undefined ? customfilter.placeholder : 'ENTER_TEXT_PLACEHOLDER' | translate"
+                                                        >
+                                                    </ion-input>
+                                                </div>
+                                                <div *ngIf="customfilter.type == 'date' ">
+                                                    <!-- add -->
+                                                    <!-- pass formName form parent -->
+                                                    <!-- customfilter.title -->
+                                                    <!-- test {{customfilter.value}} -->
+                                                    <!-- <div style="font-size: 15px;">
+                                                        {{customfilter.title }} 
+                                                    </div> -->
+                                                    <digital-app-date style="width:100%" [(selectedDate)]="customfilter.value" 
+                                                    [(ngModel)]="customfilter.value" name="customfilter.formName"
+                                                    [minDate]="customfilter.minDate" [maxDate]="customfilter.maxDate"
+                                                    [required]="true" [title]=""></digital-app-date>
+                                                </div>
+                                                <div *ngIf="customfilter.type == 'dropdown' ">
+                                                    <!-- add -->
+                                                </div>
+                                            </ion-col>
+                                        </ion-row>
+                                        <!-- <div class="centreClass1" style="display: inline-flex;">
+                                            <div *ngFor="let customfilter of customFilterData ;let c = index;"
+                                                style="margin-right: 30px;">
+                                                <div style="font-size: 15px;">
+                                                    {{customfilter.title }} 
+                                                </div>
+                                                <div *ngIf="customfilter.type == 'text' ">
+                                                   
+                                                    <ion-input (ionInput)="customInputChange($event,customfilter)"
+                                                        style="height: 35px;"
+             [placeholder]="customfilter.placeholder != undefined ? customfilter.placeholder : 'ENTER_TEXT_PLACEHOLDER' | translate"
+                                                        >
+                                                    </ion-input>
+                                                </div>
+                                                <div *ngIf="customfilter.type == 'date' ">
+                                                 
+                                                    <div style="font-size: 15px;">
+                                                        {{customfilter.title }} 
+                                                    </div>
+                                                    <app-date style="width:100%" [(selectedDate)]="customfilter.value" 
+                                                    [(ngModel)]="customfilter.value" name="customfilter.formName"
+                                                    [required]="true" [title]=""></app-date>
+                                                </div>
+                                                <div *ngIf="customfilter.type == 'dropdown' ">
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                    </ion-col>
+                                    <ion-col size="1">
+                                        <div style="position: relative;
+                                        top:27px;
+                                    ">
+                                            <!-- <ion-button (click)="customClear()">
+                                                        RESET TABLE
+                                                    </ion-button> --> 
+                                            <ion-button (click)="customSearch()" class=""
+                                            *ngIf="showCustomFilter && showSearchButton">
+                                                SEARCH
+                                            </ion-button>
+                                        </div>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-grid>
+            
+            
+                        </div>
+            </ion-row>
+        </ng-template>
+    <ng-template pTemplate="caption" *ngIf="false">
+
+            <!-- <button *ngIf="tableTitle == 'Analytics Data View'" style="padding-left: 5%" 
+                    type="button" pButton pRipple icon="pi pi-file-excel"
+                     (click)="exportExcel()" class="p-button-success p-mr-2" 
+                      pTooltip="XLS" tooltipPosition="bottom"></button> -->
+            
+        <div class="table-header">
+            <div *ngIf="showTableName">
+                <ion-row>
+                    <ion-col size="6">
+                            {{tableTitle}}
+                  
+                    </ion-col>
+
+                    <ion-col size="6">
+                            <div style="margin-top: 7%" class="ui-table-globalfilter-container" *ngIf="showSearchBar">
+                                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                        placeholder="Global Search" />
+
+                                        &nbsp; &nbsp;
+
+                                        <button *ngIf="downloadData.length > 0" style="padding-left: 5%" 
+                                                type="button" pButton pRipple icon="pi pi-file-excel"
+                                                 (click)="exportExcel()" class="p-button-success p-mr-2" 
+                                                  pTooltip="XLS" tooltipPosition="bottom"></button>
+                                </div>
+
+                                
+                    </ion-col>
+                    
+                </ion-row>
+            </div>
+
+   
+                        
+            <!-- <div class="ion-padding">
+                    <button type="button" pButton pRipple icon="pi pi-file-o" (click)="dt.exportCSV()" class="p-mr-2" pTooltip="CSV" tooltipPosition="bottom"></button>
+                    <button type="button" pButton pRipple icon="pi pi-filter" (click)="dt.exportCSV({selectionOnly:true})" class="p-button-info p-ml-auto" pTooltip="Selection Only" tooltipPosition="bottom"></button>
+                  </div> -->
+            <!-- <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                    </span> -->
+
+            
+            <div *ngIf="showActionsAdd">
+                <ion-button color="secondary" style="width: 100px;" (click)="add()"
+                    *ngIf="!appConfigService.getPlatformMobile()">ADD</ion-button>
+            </div>
+
+            <div *ngIf="showCustomFilter">
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="11">
+                            <ion-row>
+                                <ion-col size="4"  *ngFor="let customfilter of customFilterData ;let c = index;">
+                                    <div style="font-size: 0.70em; margin-bottom:5px; font-family: 'Segoe UI'; font-weight:400;">
+                                        {{customfilter.title }} 
+                                    </div>
+                                    <div *ngIf="customfilter.type == 'text' ">
+                                        <!-- [placeholder]="'ENTER_TEXT_PLACEHOLDER' | translate" -->
+                                        <!-- placeholder="Enter Text e.g 2489" -->
+                                        <ion-input (ionInput)="customInputChange($event,customfilter)"
+                                            style="    height: 40px;
+                                            font-size: 0.75em;
+                                            border-radius: 0px;
+                                            width:80%;
+                                            font-family: 'Segoe UI Semibold';"
+ [placeholder]="customfilter.placeholder != undefined ? customfilter.placeholder : 'ENTER_TEXT_PLACEHOLDER' | translate"
+                                            >
+                                        </ion-input>
+                                    </div>
+                                    <div *ngIf="customfilter.type == 'date' ">
+                                        <!-- add -->
+                                        <!-- pass formName form parent -->
+                                        <!-- customfilter.title -->
+                                        <!-- test {{customfilter.value}} -->
+                                        <!-- <div style="font-size: 15px;">
+                                            {{customfilter.title }} 
+                                        </div> -->
+                                        <digital-app-date style="width:100%" [(selectedDate)]="customfilter.value" 
+                                        [(ngModel)]="customfilter.value" name="customfilter.formName"
+                                        [required]="true" [title]=""></digital-app-date>
+                                    </div>
+                                    <div *ngIf="customfilter.type == 'dropdown' ">
+                                        <!-- add -->
+                                    </div>
+                                </ion-col>
+                            </ion-row>
+                            <!-- <div class="centreClass1" style="display: inline-flex;">
+                                <div *ngFor="let customfilter of customFilterData ;let c = index;"
+                                    style="margin-right: 30px;">
+                                    <div style="font-size: 15px;">
+                                        {{customfilter.title }} 
+                                    </div>
+                                    <div *ngIf="customfilter.type == 'text' ">
+                                       
+                                        <ion-input (ionInput)="customInputChange($event,customfilter)"
+                                            style="height: 35px;"
+ [placeholder]="customfilter.placeholder != undefined ? customfilter.placeholder : 'ENTER_TEXT_PLACEHOLDER' | translate"
+                                            >
+                                        </ion-input>
+                                    </div>
+                                    <div *ngIf="customfilter.type == 'date' ">
+                                     
+                                        <div style="font-size: 15px;">
+                                            {{customfilter.title }} 
+                                        </div>
+                                        <app-date style="width:100%" [(selectedDate)]="customfilter.value" 
+                                        [(ngModel)]="customfilter.value" name="customfilter.formName"
+                                        [required]="true" [title]=""></app-date>
+                                    </div>
+                                    <div *ngIf="customfilter.type == 'dropdown' ">
+                                    </div>
+                                </div>
+                            </div> -->
+                        </ion-col>
+                        <ion-col size="1">
+                            <div style="position: relative;
+                            top:27px;
+                        ">
+                                <!-- <ion-button (click)="customClear()">
+                                            RESET TABLE
+                                        </ion-button> -->
+                                <ion-button (click)="customSearch()" class="gradientClass"
+                                >
+                                    SEARCH
+                                </ion-button>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+
+
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns >
+        <tr *ngIf="tableData.length > 0">
+            
+            <th style="width: 3rem" *ngIf="showcheckbox"></th>
+            <!-- <th style="width: 3rem" *ngIf="showRadiobuttonCheckbox"></th> -->
+            <!-- <th *ngIf="showSerialNumber">Sr.No</th> -->
+            <th  [ngClass]="{'cap':col.bodyType== 'currencyText'}" *ngFor="let col of columns" [pSortableColumn]="col.field"
+                [ngStyle]="{'width':col.width}">
+                {{col.header}}
+                <p-sortIcon *ngIf="showSortIcon" [field]="col.field"></p-sortIcon>
+            </th>
+            <th style="width: 8rem" *ngIf="showActions">ACTIONS</th>
+        </tr>
+        <!-- filtering (kept false)-->
+        <tr *ngIf="false">
+            <th *ngIf="showcheckbox">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <!-- <th *ngIf="showRadiobuttonCheckbox">
+                test rd
+            </th> -->
+            <th *ngFor="let col of columns" >
+                <span [ngSwitch]="col.headerType">
+                    <!-- add serial number space here -->
+                    <ng-template [ngSwitchCase]="'text' ">
+                        <input pInputText type="text" (input)="dt.filter($event.target.value, col.field, 'startsWith')"
+                            placeholder="Search by Name" class="ui-column-filter">
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'nestedText' ">
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, col.field.name, 'startsWith')"
+                            placeholder="Search by Name" class="ui-column-filter">
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'multiselect' ">
+                        <!-- <p-multiSelect [options]="representatives" placeholder="All"
+                            (onChange)="onRepresentativeChange($event)" styleClass="ui-column-filter"
+                            optionLabel="name">
+                            <ng-template let-option pTemplate="item">
+                                <div class="ui-multiselect-representative-option">
+                                    <img [alt]="option.label"
+                                        src="assets/showcase/images/demo/avatar/&#123;&#123;option.value.image&#125;&#125;"
+                                        width="32" />
+                                    <span>&#123;&#123;option.label&#125;&#125;</span>
+                                </div>
+                            </ng-template>
+                        </p-multiSelect> -->
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'dropdown' ">
+                        <!-- <p-dropdown [options]="statuses" (onChange)="dt.filter($event.value, col.field, 'equals')"
+                            styleClass="ui-column-filter" placeholder="Select a Status" [showClear]="true">
+                            <ng-template let-option pTemplate="item">
+                                <span
+                                    [class]="'customer-badge status-' + option.value">&#123;&#123;option.label&#125;&#125;</span>
+                            </ng-template>
+                        </p-dropdown> -->
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'date' ">
+                        <!-- <p-calendar (onSelect)="onDateSelect($event)"
+                            (onClearClick)="dt.filter('', col.field, 'equals')" [showButtonBar]="true"
+                            styleClass="ui-column-filter" placeholder="Registration Date" [readonlyInput]="true"
+                            dateFormat="yy-mm-dd"></p-calendar> -->
+                    </ng-template>
+                    <ng-template *ngSwitchDefault>
+                        default ***
+                        <input pInputText type="text" (input)="dt.filter($event.target.value, col.field, 'startsWith')"
+                            placeholder="Search by Name" class="ui-column-filter">
+                    </ng-template>
+                </span>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex" >
+        <!-- [pSelectableRow]="rowData" -->
+        <tr class="ui-selectable-row" *ngIf="tableData.length > 0">
+            <td *ngIf="showcheckbox">
+                <p-tableCheckbox [value]="rowData" ></p-tableCheckbox>
+            </td>
+            <!-- <td *ngIf="showRadiobuttonCheckbox">
+                <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+            </td> -->
+            <!-- <td *ngIf="showSerialNumber"> {{i + 1}} </td> -->
+
+            <td *ngFor="let col of columns" [ngClass]="{'cap':col.bodyType== 'currencyText'}">
+                <span [ngSwitch]="col.bodyType">
+                     <!-- RADIOBOX -->
+                     <ng-template [ngSwitchCase]=" 'radioBoxText' ">
+                        <p-tableRadioButton [value]="rowData" [disabled]="!rowData[col.field]">
+                        </p-tableRadioButton>
+                        </ng-template>
+                        <!-- CHECKBOX -->
+                    <ng-template [ngSwitchCase]=" 'checkBoxText' ">
+                        <p-tableCheckbox [value]="rowData" [disabled]="!rowData[col.field]">
+                        </p-tableCheckbox>
+                        </ng-template>
+                    <!-- STRING -->
+                    <ng-template [ngSwitchCase]=" 'text' ">
+                        <span class="ui-column-title">{{col.header}}</span>
+                        <span *ngIf="rowData[col.field] != null && rowData[col.field] != '' ">
+                            {{rowData[col.field]}}
+                        </span>
+                        <span *ngIf="rowData[col.field] == null || rowData[col.field] == '' " class="centreClass1">
+                            -
+                        </span>
+                    </ng-template>
+                    <!-- STRING LINK-->
+                    <ng-template [ngSwitchCase]=" 'textLink' ">
+                        <span class="ui-column-title">{{col.header}}</span>
+                        <span class="linkClass" (click)="onLinkClick($event,rowData)"
+                            *ngIf="rowData[col.field] != null && rowData[col.field] != '' ">
+                            {{rowData[col.field]}}
+                        </span>
+                        <span *ngIf="rowData[col.field] == null || rowData[col.field] == '' " class="centreClass1">
+                            -
+                        </span>
+                    </ng-template>
+                    <!-- DATE -->
+                    <ng-template [ngSwitchCase]=" 'dateText' ">
+                        <span class="ui-column-title">{{col.header}}</span>
+                        <span *ngIf="rowData[col.field] != null && rowData[col.field] != '' ">
+                            {{ rowData[col.field] | date: appConfigService.getDateTypeFormat() }}
+                            <!-- {{ rowData[col.field]  }} -->
+                        </span>
+                        <span *ngIf="rowData[col.field] == null || rowData[col.field] == '' " class="centreClass1">
+                            -
+                        </span>
+                    </ng-template>
+                    <!-- CURRENCY -->
+                    <ng-template [ngSwitchCase]=" 'currencyText' ">
+                        <span class="ui-column-title">{{col.header}}</span>
+                        <!-- rowData[[col.field][currencyValue]] -->
+                        <span *ngIf="rowData[col.field] != null && rowData[col.field] != '' " >
+                            {{ rowData[col.field].currencyValue | customcurrency: rowData[col.field].currencyLabel
+                            :appConfigService.getCurrencyPipeDisplay():appConfigService.getCurrencyPipeLimit()}}
+                        </span>
+                        <span
+                            *ngIf="rowData[col.field].currencyValue == null || rowData[col.field].currencyValue == '' "
+                            class="centreClass1">
+                            -
+                        </span>
+                    </ng-template>
+                    <!-- STATUS -->
+                    <ng-template [ngSwitchCase]="'statusText' ">
+                        <span class="ui-column-title">{{col.header}}</span>
+                        <div style="width: 100%;text-align: center;"
+                            [class]="'customer-badge status-' + rowData[col.field]"
+                            *ngIf="rowData[col.field] != null && rowData[col.field] != '' ">
+                            {{rowData[col.field]}}
+                        </div>
+                        <span *ngIf="rowData[col.field] == null || rowData[col.field] == '' " class="centreClass1">
+                            -
+                        </span>
+                        <!-- <span [class]="'customer-badge status-' + rowData[col.field]">{{rowData[col.field]}}</span> -->
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'flagText' ">
+                        <span class="ui-column-title">{{col.header}}</span>
+                        <span [class]="'flag flag-' + rowData[col.field].code"></span>
+                        <span style="vertical-align: middle; margin-left: .5em">{{rowData[col.field].name}}</span>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'imgText' ">
+                        <span class="ui-column-title">{{col.header}}</span>
+                        <img [alt]="rowData[col.field].name"
+                            src="assets/showcase/images/demo/avatar/&#123;&#123;rowData[col.field].image&#125;&#125;"
+                            width="32" style="vertical-align: middle" />
+                        <span style="vertical-align: middle; margin-left: .5em">{{rowData[col.field].name}}</span>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'progressbar' ">
+                        <span class="ui-column-title">{{col.header}}</span>
+                        <p-progressBar [value]="rowData[col.field]" [showValue]="false"></p-progressBar>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'fileText' ">
+                        <span class="ui-column-title">{{col.header}}</span>
+
+                        <div style="display: inline-flex;">
+                                <!-- DELETE -->
+                            <!-- <div *ngIf="rowData[col.field].actionsDelete"
+                                (click)="onFileDeleteClk(rowData,rowData[col.field])"
+                                style="font-size: 20px;
+                                margin-right: 5px;"
+                                >
+                                <ion-icon name="trash-outline" style="color: red;"></ion-icon>
+                            </div> -->
+                            <!-- font-size: 20px; -->
+                                    <!-- </span> -->
+                            <div *ngIf="rowData[col.field].actionsView" (click)="onFileViewClk(rowData,rowData[col.field])"
+                            style="
+                            margin-right: 10px;"
+                            >
+                                <!-- VIEW -->
+                                <!-- <ion-icon name="eye-outline" style="color: blue;"></ion-icon> -->
+                                <div class="backInputClass backInputClassView">
+                                    <span class="uploadBtnText">
+                                        VIEW
+                                    </span>
+                                    </div>
+                            </div>
+                            <div *ngIf="rowData[col.field].actionsUpload;let z = index;">
+                                <!-- "singleSelect":true, "metaData":"", "acceptedType":"" -->
+                                <!-- <div (click)="onFileClick(rowData,rowData[col.field])">
+                                    UPLOAD
+                                </div> -->
+                                <!-- <p-fileUpload  maxFileSize="1000000"  mode="basic"
+                                  styleClass="cfn-uploader" chooseLabel="Upload"
+                                  (onSelect)="onInputFileUpload($event,rowData,rowData[col.field],z)"
+                                  >
+                               
+                                </p-fileUpload> -->
+                                <!-- https://www.primefaces.org/primeng/showcase/#/fileupload -->
+                                <div class="inputWrapper">
+                                    <div class="backInputClass">
+                                    <span class="uploadBtnText">
+                                        UPLOAD
+                                    </span>
+                                    </div>
+                                    <input class="inputActual" #fileView type="file"
+                                    *ngIf="rowData[col.field].showFileInput"
+                                    accept="image/jpeg,image/png,application/pdf"
+                                     (change)="onInputFileUpload($event,rowData,rowData[col.field],z)">
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div *ngIf="rowData[col.field].fileName != null" style="color:blue;margin-top:10px">
+                            {{rowData[col.field].fileName}}
+                        </div>
+
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'moreDetailsText' ">
+                        <!-- <ion-icon style="cursor: pointer;
+                        font-size: 24px;
+                        width: 50px;"
+                        name="git-compare-outline" 
+                        color="primary"
+                        (click)="moreDetailsClk(rowData)"></ion-icon> -->
+
+                        <ion-button (click)="moreDetailsClk(rowData)"
+                        style="width: 100%;
+                        font-size: 11px;
+                        white-space: normal;
+                        " 
+                        >More details</ion-button>
+                    
+                        <!-- <ion-button (click)="moreDetailsClk(col)">More details</ion-button> -->
+                    </ng-template>
+
+                    <ng-template [ngSwitchCase]="'moreDetailsText2' ">
+                            <!-- <ion-icon style="cursor: pointer;
+                            font-size: 24px;
+                            width: 50px;"
+                            name="git-compare-outline" 
+                            color="primary"
+                            (click)="moreDetailsClk(rowData)"></ion-icon> -->
+                        <ion-button (click)="moreDetailsClk(rowData)"
+                        style="width: 100%;
+                        font-size: 11px;
+                        white-space: normal;
+                        "
+                        >Track Journey</ion-button>
+
+
+                            <!-- <ion-icon style="cursor: pointer;
+                            font-size: 24px;
+                            width: 50px;"
+                            name="eye-outline" 
+                            color="primary"
+                            (click)="moreDetailsClkTwo(rowData)"></ion-icon> -->
+
+                        <ion-button (click)="moreDetailsClkTwo(rowData)"
+                        style="width: 100%;
+                        font-size: 11px;
+                        white-space: normal;
+                        "
+                        >View Workflow</ion-button>
+
+                        <!-- <ion-button (click)="cancelApplication(rowData)" *ngIf="rowData[col.field]"
+                        style="width: 100%;
+                        font-size: 11px;
+                        white-space: normal;
+                        "
+                        >Cancel Application</ion-button> -->
+    
+                            
+                            <!-- <ion-button (click)="moreDetailsClk(col)">More details</ion-button> -->
+                        </ng-template>
+                        <!-- color="danger" -->
+                    <ng-template [ngSwitchCase]="'cancelApplication' ">
+                        <ion-button (click)="cancelApplication(rowData)" *ngIf="rowData[col.field]"
+                        style="width: 100%;
+                        font-size: 11px;
+                        white-space: normal;
+                        "
+                        >Cancel Application</ion-button>
+                        </ng-template>
+
+                    <span *ngSwitchDefault>
+                        DEF***
+                        {{rowData[col.field]}}
+                    </span>
+                </span>
+
+            </td>
+            <td style="text-align: center" *ngIf="showActions">
+                <button *ngIf="showActionsEdit" pButton type="button" class="p-button-secondary edit"
+                    icon="pi pi-pencil" (click)="edit(rowData)"></button>
+                &nbsp;&nbsp;
+                <button *ngIf="showActionsDelete" pButton type="button" class="p-button-secondary delete"
+                    icon="pi pi-trash"></button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr *ngIf="!showCustomFilter">
+            <td colspan="12">No records found.</td>
+        </tr>
+    </ng-template>
+    <!-- custom search empty message -->
+    <!-- <ng-template pTemplate="emptymessage">
+        <tr *ngIf="showTableEmptyMessage">
+            <td colspan="12">No records found.</td>
+        </tr>
+    </ng-template> -->
+</p-table>
+<!-- </ion-content> -->
+
+
+<!-- https://primefaces.org/primeng/showcase/#/table -->
+<!-- Single selection can also be handled using radio buttons by enabling the selectionMode property of column as "single". -->
+
+<!-- 
+<button data-toggle="tooltip" title="more details" style="background: none;"
+(click)="moreDetailsClk(rowData)"
+>
+<ion-icon style="cursor: pointer;
+font-size: 24px;
+width: 50px;"
+name="git-compare-outline" 
+data-toggle="tooltip" title="more details"
+color="primary"
+></ion-icon>
+</button> -->
+
+<!-- https://primefaces.org/primeng/showcase/#/table -->
+<!-- Single selection can also be handled using radio buttons by enabling the selectionMode property of column as "single". -->

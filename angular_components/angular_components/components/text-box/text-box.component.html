@@ -1,0 +1,29 @@
+<ion-label [position]="appConfig.labelPosition" class="blackColor">
+   {{title | translate}}
+</ion-label>
+
+<!-- text -->
+<ion-input *ngIf="inputType != 'number' " class="blackColor"
+style="font-weight: 100;"
+[ngClass]="{'readonly': readonly}" 
+[type]="inputType == undefined ? 'text' : inputType"
+[inputmode]="inputmode" [(ngModel)]="enteredText" [disabled]="disabled"
+ (ionBlur)="emitBlurValue()"
+  [readonly]="readonly" (ionInput)="onInputVal($event.target.value)"
+  [placeholder]="placeholder | translate"
+  [maxlength]="maxlength"
+  [minlength]="minlength"
+  >
+</ion-input>
+<!-- number -->
+<ion-input *ngIf="inputType == 'number' " integerOnly class="blackColor"
+style="font-weight: 100;"
+[ngClass]="{'readonly': readonly}" 
+[inputmode]="inputmode" [(ngModel)]="enteredText" [disabled]="disabled"
+ (ionBlur)="emitBlurValue()"
+  [readonly]="readonly" (ionInput)="onInputVal($event.target.value)"
+  [placeholder]="placeholder | translate"
+  [maxlength]="maxlength"
+  [minlength]="minlength"
+  >
+</ion-input>

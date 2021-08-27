@@ -1,0 +1,592 @@
+
+      <form #editForm="ngForm" *ngIf="additionalData" class="outForm">
+        <ion-grid size="12" class="inFormGrid">
+          <ion-row>
+            <ion-col size="5">
+              <digital-text-box 
+              [readonly]="true"
+              [title]=" 'ADD_DATA.APPLICANT_TYPE' " [placeholder]=" 'ADD_DATA.APPLICANT_TYPE_PLACEHOLDER' "
+                [(ngModel)]="additionalData.applicationType" [(enteredText)]="additionalData.applicationType"
+                [required]="true" name="applicantType" [maxlength]="50">
+              </digital-text-box>
+              <div class="errorWrapper">
+                <div *ngIf="editForm.controls?.applicantType?.invalid && isFormSubmitted"
+                  class="ion-no-padding transparent" lines="none">
+                  <div class="errorMsg" *ngIf="editForm.controls?.applicantType?.errors.required">
+                    {{'FORM_ERROR.REQUIRED' |
+                    translate}}</div>
+                </div>
+                <div class="errorMsg" *ngIf="editForm.controls?.applicantType?.errors?.pattern">
+                  {{'FORM_ERROR.NUMBER_PATTERN'
+                  | translate}}</div>
+              </div>
+            </ion-col>
+            <ion-col size="5" offset="2">
+              <!-- test - {{salutationDropdownArr | json}} -->
+
+              <digital-cs-select-layout-1 
+              [readonly]="bmReadOnly"
+              [show]="false" style="width:100% !important" [title]="'ADD_DATA.SALUTATION'"
+                [placeholder]="'ADD_DATA.SALUTATION_PLACEHOLDER'" [data]="salutationDropdownArr" [valueId]="'id'"
+                [valueDesc]="'label'" (onChange)="onChangeOfOfferedProduct($event)"
+                [(ngModel)]="additionalData.salutation" [(selectedItem)]="additionalData.salutation" name="salutation"
+                [required]="true">
+              </digital-cs-select-layout-1>
+              <div class="errorWrapper">
+                <div *ngIf="editForm.controls?.salutation?.invalid && isFormSubmitted">
+                  <div class="errorMsg" *ngIf="editForm.controls?.salutation?.errors.required">{{'FORM_ERROR.REQUIRED' |
+                    translate}}</div>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <!-- 2nd gender and marital -->
+
+          <ion-row>
+            <ion-col size="5">
+              <!-- <div>
+                {{'ADD_DATA.GENDER' | translate}}
+              </div> -->
+              <!-- <div style="display: inline-flex;">
+                <div class="radio" [ngClass]="{'isSelected': additionalData.gender == 1}"
+                (click)="additionalData.gender = 1;"
+                >
+                {{'ADD_DATA.GENDER_MALE' | translate}} 
+                </div>
+                <div class="radio" [ngClass]="{'isSelected': additionalData.gender == 2}"
+                (click)="additionalData.gender = 2;"
+                >
+                  {{'ADD_DATA.GENDER_FEMALE' | translate}} 
+                </div>
+                </div> -->
+                <digital-cs-radio-button-layout-1 [(ngModel)]="additionalData.gender" 
+                [readonly]="bmReadOnly" [required]="true"
+                [(selectedItem)]="additionalData.gender" name="gender"
+                [title]="''" [data]="radioActionArr"
+                 (onItemClick)="radioActionFunc($event)">
+            </digital-cs-radio-button-layout-1>
+            <div class="errorWrapper">
+              <div *ngIf="editForm.controls?.gender?.invalid && isFormSubmitted">
+                <div class="errorMsg" *ngIf="editForm.controls?.gender?.errors.required">
+                  {{'FORM_ERROR.REQUIRED' | translate}}</div>
+              </div>
+            </div>
+
+            </ion-col>
+            <ion-col size="5" offset="2">
+              <digital-cs-select-layout-1 
+              [readonly]="bmReadOnly"
+              [show]="false" style="width:100% !important" [title]="'ADD_DATA.MARITAL_STATUS'"
+                [placeholder]="'ADD_DATA.MARITAL_STATUS_PLACEHOLDER'" [data]="maritalStatusDropdownArr" [valueId]="'id'"
+                [valueDesc]="'label'" (onChange)="onChangeOfOfferedProduct($event)"
+                [(ngModel)]="additionalData.maritalStatus" [(selectedItem)]="additionalData.maritalStatus"
+                name="maritalStatus" [required]="true">
+              </digital-cs-select-layout-1>
+              <div class="errorWrapper">
+                <div *ngIf="editForm.controls?.maritalStatus?.invalid && isFormSubmitted">
+                  <div class="errorMsg" *ngIf="editForm.controls?.maritalStatus?.errors.required">
+                    {{'FORM_ERROR.REQUIRED' | translate}}</div>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+<ion-row>
+    <ion-col size="5">
+
+        <digital-cs-select-layout-1 
+        [readonly]="bmReadOnly"
+        [show]="false" style="width:100% !important" 
+        [title]="'ADD_DATA.SELECT_ACCOUNT_NUMBER'"
+         [placeholder]="'ADD_DATA.SELECT_ACCOUNT_NUMBER_PLACEHOLDER'"
+          [data]="accountNumber" [valueId]="'id'" [valueDesc]="'label'" 
+          (onChange)="onChangeOfConsentForCreditBureau($event)"
+          [(ngModel)]="additionalData.accountNo" 
+          [(selectedItem)]="additionalData.accountNo" 
+          name="accountNo"
+          [required]="true">
+        </digital-cs-select-layout-1>
+        <div class="errorWrapper">
+          <div *ngIf="editForm.controls?.accountNo?.invalid && isFormSubmitted">
+            <div class="errorMsg" *ngIf="editForm.controls?.accountNo?.errors.required">
+              {{'FORM_ERROR.REQUIRED' | translate}}</div>
+          </div>
+        </div>
+      </ion-col>
+      <!-- email -->
+      <ion-col size="5" offset="2">
+        <digital-text-box 
+        [readonly]="bmReadOnly"
+        [customValidation]="true"
+        [emailValidation]="true"
+        [title]=" 'ADD_DATA.EMAIL_ID' " [placeholder]=" 'ADD_DATA.EMAIL_ID_PLACEHOLDER' "
+        [(ngModel)]="additionalData.emailId" [(enteredText)]="additionalData.emailId"
+        [required]="true" name="emailId" [maxlength]="80">
+      </digital-text-box>
+      <div class="errorWrapper">
+        <div *ngIf="editForm.controls?.emailId?.invalid && isFormSubmitted"
+          class="ion-no-padding transparent" lines="none">
+          <div class="errorMsg" *ngIf="editForm.controls?.emailId?.errors.required">
+            {{'FORM_ERROR.REQUIRED' |
+            translate}}</div>
+        </div>
+        <div class="errorMsg" *ngIf="editForm.controls?.emailId?.errors?.pattern">
+          {{'FORM_ERROR.EMAIL_PATTERN'
+          | translate}}</div>
+      </div>
+        </ion-col>
+</ion-row>
+          <!-- 3rd type of residence and empty -->
+          <ion-row>
+            <ion-col size="5">
+              <digital-cs-select-layout-1 
+              [readonly]="bmReadOnly"
+              [show]="false" style="width:100% !important" [title]="'ADD_DATA.TYPE_RESIDENCE'"
+                [placeholder]="'ADD_DATA.TYPE_RESIDENCE_PLACEHOLDER'" [data]="typeresidenceDropdownArr" [valueId]="'id'"
+                [valueDesc]="'label'" (onChange)="onChangeOfOfferedProduct($event)"
+                [(ngModel)]="additionalData.typeOfResidence" [(selectedItem)]="additionalData.typeOfResidence"
+                name="typeOfResidence" [required]="true">
+              </digital-cs-select-layout-1>
+              <div class="errorWrapper">
+                <div *ngIf="editForm.controls?.typeOfResidence?.invalid && isFormSubmitted">
+                  <div class="errorMsg" *ngIf="editForm.controls?.typeOfResidence?.errors.required">
+                    {{'FORM_ERROR.REQUIRED' | translate}}</div>
+                </div>
+              </div>
+            </ion-col>
+            <!-- <ion-col size="5">
+            </ion-col> -->
+            <!-- email -->
+      <ion-col size="5" offset="2">
+        <digital-text-box 
+        [readonly]="bmReadOnly"
+        [customValidation]="true"
+        [emailValidation]="true"
+        [title]=" 'ADD_DATA.ALTERNATE_EMAIL_ID' " [placeholder]=" 'ADD_DATA.ALTERNATE_EMAIL_ID_PLACEHOLDER' "
+        [(ngModel)]="additionalData.alternateEmailId" [(enteredText)]="additionalData.alternateEmailId"
+        [required]="false" name="alternateEmailId" [maxlength]="80">
+      </digital-text-box>
+      <div class="errorWrapper">
+        <div *ngIf="editForm.controls?.alternateEmailId?.invalid && isFormSubmitted"
+          class="ion-no-padding transparent" lines="none">
+          <div class="errorMsg" *ngIf="editForm.controls?.alternateEmailId?.errors.required">
+            {{'FORM_ERROR.REQUIRED' |
+            translate}}</div>
+        </div>
+        <div class="errorMsg" *ngIf="editForm.controls?.alternateEmailId?.errors?.pattern">
+          {{'FORM_ERROR.EMAIL_PATTERN'
+          | translate}}</div>
+      </div>
+        </ion-col>
+          </ion-row>
+
+          <!-- 4th address1 and 2 -->
+          <ion-row>
+            <ion-col size="5">
+              <!-- <ion-item class="ion-no-padding transparent" input lines="none"> -->
+              <ion-label class="text-size-xxs  text-color-secondary font-regular number-labels blackColor"
+                position="stacked">
+                {{'ADD_DATA.ADDRESS1' | translate}} </ion-label>
+                <!-- // as per TARUN 15-07-2021 eve 6.15 pm  (address1 is set to address2)-->
+              <ion-textarea [ngClass]="{'readonly':bmReadOnly }" class="blackColor"
+              [readonly]="bmReadOnly"
+              [(ngModel)]="additionalData.address2" name="address2" rows="4" cols="20" maxLength="100"
+                placeholder="{{'ADD_DATA.ADDRESS1_PLACEHOLDER' | translate}}" required>
+              </ion-textarea>
+              <div class="errorWrapper">
+                <div *ngIf="editForm.controls?.address2?.invalid && isFormSubmitted"
+                class="ion-no-padding transparent" lines="none">
+                <div class="errorMsg" *ngIf="editForm.controls?.address2?.errors.required">{{'FORM_ERROR.REQUIRED' |
+                  translate}}</div>
+              </div>
+              <div class="errorMsg" *ngIf="editForm.controls?.address2?.errors?.pattern">{{'FORM_ERROR.NUMBER_PATTERN' |
+                translate}}</div>
+              </div>
+              <!-- </ion-item> -->
+            </ion-col>
+            <!-- <ion-col size="5" offset="2">
+              <ion-label class="text-size-xxs  text-color-secondary  font-regular number-labels"
+                position="stacked">
+                {{'ADD_DATA.ADDRESS2' | translate}} </ion-label>
+
+              <ion-textarea [ngClass]="{'readonly':bmReadOnly }"
+              [readonly]="bmReadOnly"
+              [(ngModel)]="additionalData.address2" name="address2" rows="4" cols="20" maxLength="100"
+                placeholder="{{'ADD_DATA.ADDRESS2_PLACEHOLDER' | translate}}" >
+              </ion-textarea>
+              <div class="errorWrapper">
+                <div *ngIf="editForm.controls?.address2?.invalid && isFormSubmitted"
+                class="ion-no-padding transparent" lines="none">
+                <div class="errorMsg" *ngIf="editForm.controls?.address2?.errors.required">{{'FORM_ERROR.REQUIRED' |
+                  translate}}</div>
+              </div>
+              <div class="errorMsg" *ngIf="editForm.controls?.address2?.errors?.pattern">{{'FORM_ERROR.NUMBER_PATTERN' |
+                translate}}</div>
+              </div>
+            </ion-col> -->
+          </ion-row>
+
+
+          <!-- 5th mobile1 and 1 -->
+          <ion-row>
+                <!-- // as per TARUN 15-07-2021 eve 6.15 pm  (mobile1 is set to mobile2)-->
+            <!-- <ion-col size="5">
+              <digital-text-box 
+              [readonly]="bmReadOnly"
+              [inputType]=" 'number' "
+              [title]=" 'ADD_DATA.MOBILE1' " [placeholder]=" 'ADD_DATA.MOBILE1_PLACEHOLDER' "
+              [(ngModel)]="additionalData.mobile1" [(enteredText)]="additionalData.mobile1"
+              [required]="true" name="mobile1" [maxlength]="10" [minlength]="10">
+            </digital-text-box>
+            <div class="errorWrapper">
+              <div *ngIf="editForm.controls?.mobile1?.invalid && isFormSubmitted"
+                class="ion-no-padding transparent" lines="none">
+                <div class="errorMsg" *ngIf="editForm.controls?.mobile1?.errors.required">
+                  {{'FORM_ERROR.REQUIRED' |
+                  translate}}</div>
+              </div>
+              <div class="errorMsg" *ngIf="editForm.controls?.mobile1?.errors?.pattern">
+                {{'FORM_ERROR.NUMBER_PATTERN'
+                | translate}}</div>
+                <div class="errorMsg" *ngIf="editForm.controls?.mobile1?.errors?.minlength">
+                  {{'FORM_ERROR.MOBILE_PATTERN'
+                | translate}}</div>
+              </div>
+            </ion-col> -->
+            <ion-col size="5">
+              <digital-text-box 
+              [readonly]="true"
+              [title]=" 'ADD_DATA.MOBILE1' " [placeholder]=" 'ADD_DATA.MOBILE1_PLACEHOLDER' "
+              [(ngModel)]="additionalData.mobile1" [(enteredText)]="additionalData.mobile1"
+              [required]="false" name="mobile1">
+            </digital-text-box>
+            <div class="errorWrapper">
+              <div *ngIf="editForm.controls?.mobile1?.invalid && isFormSubmitted"
+                class="ion-no-padding transparent" lines="none">
+                <div class="errorMsg" *ngIf="editForm.controls?.mobile1?.errors.required">
+                  {{'FORM_ERROR.REQUIRED' |
+                  translate}}</div>
+              </div>
+              </div>
+            </ion-col>
+            <ion-col size="5" offset="2">
+              <digital-text-box 
+              [readonly]="bmReadOnly"
+              [inputType]=" 'number' "
+              [title]=" 'ADD_DATA.MOBILE2' " [placeholder]=" 'ADD_DATA.MOBILE2_PLACEHOLDER' "
+              [(ngModel)]="additionalData.mobile2" [(enteredText)]="additionalData.mobile2"
+              [required]="true" name="mobile2" [maxlength]="10" [minlength]="10">
+            </digital-text-box>
+            <div class="errorWrapper">
+              <div *ngIf="editForm.controls?.mobile2?.invalid && isFormSubmitted"
+                class="ion-no-padding transparent" lines="none">
+                <div class="errorMsg" *ngIf="editForm.controls?.mobile2?.errors.required">
+                  {{'FORM_ERROR.REQUIRED' |
+                  translate}}</div>
+              </div>
+              <div class="errorMsg" *ngIf="editForm.controls?.mobile2?.errors?.pattern">
+                {{'FORM_ERROR.NUMBER_PATTERN'
+                | translate}}</div>
+                <div class="errorMsg" *ngIf="editForm.controls?.mobile2?.errors?.minlength">
+                  {{'FORM_ERROR.MOBILE_PATTERN'
+                | translate}}</div>
+            </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <!-- <ion-col size="5">
+              <cs-select-layout-1 [show]="false" style="width:100% !important"
+              [title]="'ADD_DATA.CONSENT_CREDIT_BUREAU'"
+             [placeholder]="'ADD_DATA.CONSENT_CREDIT_BUREAU_PLACEHOLDER'" 
+             [data]="consentDropdownArray" [valueId]="'id'"
+             [valueDesc]="'label'" (onChange)="onChangeOfConsentForCreditBureau($event)"
+             [(ngModel)]="additionalData.consentForCreditBureau" 
+             [(selectedItem)]="additionalData.consentForCreditBureau"
+             name="consentForCreditBureau" [required]="true">
+           </cs-select-layout-1>
+           <div class="errorWrapper">
+             <div *ngIf="editForm.controls?.consentForCreditBureau?.invalid && isFormSubmitted">
+               <div class="errorMsg" *ngIf="editForm.controls?.consentForCreditBureau?.errors.required">
+                 {{'FORM_ERROR.REQUIRED' | translate}}</div>
+             </div>
+           </div>
+            </ion-col> -->
+
+           
+
+            <ion-col size="5">
+<!-- empty -->
+<!-- {{editForm.value | json}} -->
+<!-- {{editForm.invalid}} -->
+
+              </ion-col>
+          </ion-row>
+
+          <!-- ADD supplementryCard -->
+          <ion-row *ngIf="productIsCreditCard">
+            <ion-col size="5">
+                <digital-cs-radio-button-layout-1 
+                [readonly]="bmReadOnly" [readOnlyHeight]=" '70%' "
+                [(ngModel)]="additionalData.supplementryCard" 
+                [(selectedItem)]="additionalData.supplementryCard" name="supplementryCard"
+                [title]="'ADD_DATA.ADD_SUPPLEMENTARY'" [data]="radioSupplemtaryArr"
+                 (onItemClick)="radioSupplFunc($event)">
+            </digital-cs-radio-button-layout-1>
+
+            </ion-col>
+            </ion-row>
+            <!-- <ion-row>
+              <ion-col>
+                <form #arrrayForm="ngForm" >
+                  <div *ngFor="let x of tags; let i = index" class="my-6" [ngModelGroup]="i">
+                    <input name="label" [(ngModel)]="x.label">
+                    <button (click)="removeTag(i)">remove</button>
+                  </div>
+                  <button type="submit">Submit</button>
+                </form>
+                <button (click)="addMoreSupp()">Push New Tag</button>
+                <pre>
+                 Model:
+                 {{tags|json}}
+                 Form.value:
+                 {{ arrrayForm.value | json }}
+                </pre>
+              </ion-col>
+              
+            </ion-row> -->
+
+            <!-- array -->
+      <div *ngIf="showSupplemnetaryBool">
+              <!-- https://stackblitz.com/edit/angular-ngmodelgroup-array-issue-fixed -->
+              <form #arrrayForm="ngForm" >
+             <ion-row *ngFor="let data of additionalData.supplementaryCardData;let i = index;"
+              [ngModelGroup]="data._id">
+            <ion-col size="5">
+              <digital-text-box 
+              [readonly]="bmReadOnly"
+              [title]=" 'ADD_DATA.NAME_ON_CARD' " [placeholder]=" 'ADD_DATA.NAME_ON_CARD_PLACEHOLDER' "
+              [(ngModel)]="data.nameOnCard" [(enteredText)]="data.nameOnCard"
+              [required]="true" name="nameOnCard" [maxlength]="50">
+            </digital-text-box>
+            <div class="errorWrapper">
+              <div *ngIf="(data.nameOnCard == '' || data.nameOnCard == null) && isFormSubmitted"
+                class="ion-no-padding transparent" lines="none">
+                <div class="errorMsg">
+                  {{'FORM_ERROR.REQUIRED' |
+                  translate}}</div>
+              </div>
+            </div>
+            </ion-col>
+            <ion-col size="5" offset="2">
+                <digital-cs-select-layout-1 
+                [readonly]="bmReadOnly"
+                [show]="false" style="width:100% !important"
+                [title]="'ADD_DATA.MINIMUM_TO_PAY'"
+                 [placeholder]="'ADD_DATA.MINIMUM_TO_PAY_PLACEHOLDER'"
+                 [data]="minimumToPayDropdownArray"
+                  [valueId]="'id'" [valueDesc]="'label'"
+                   (onChange)="onChangeOfSurrogateType($event,i)"
+                 [(ngModel)]="data.minimumToPay"
+                  [(selectedItem)]="data.minimumToPay" 
+                  name="minimumToPay" [required]="true">
+               </digital-cs-select-layout-1>
+              <!-- <cs-select-layout-1 [show]="false" style="width:100% !important"
+              [title]="'ADD_DATA.SURROGATE_TYPE'"
+             [placeholder]="'ADD_DATA.SURROGATE_TYPE_PLACEHOLDER'" 
+             [data]="surrogateTypeDropdownArray" [valueId]="'id'"
+             [valueDesc]="'label'" (onChange)="onChangeOfSurrogateType($event,i)"
+             [(ngModel)]="data.surrogateType" 
+             [(selectedItem)]="data.surrogateType"
+             name="surrogateType" [required]="true">
+           </cs-select-layout-1> -->
+           <div class="errorWrapper">
+             <div *ngIf="(data.minimumToPay == '' || data.minimumToPay == null) && isFormSubmitted">
+               <div class="errorMsg">
+                 {{'FORM_ERROR.REQUIRED' | translate}}</div>
+             </div>
+           </div>
+            </ion-col>
+
+            <!-- <ion-col size="2">
+
+            </ion-col> -->
+
+            <ion-col size="5">
+                <digital-text-box 
+                [readonly]="bmReadOnly"
+                [title]=" 'ADD_DATA.PHONE_NUMBER' " 
+                [placeholder]=" 'ADD_DATA.PHONE_NUMBER_PLACEHOLDER' " 
+                [(ngModel)]="data.phoneNumber"
+                  [(enteredText)]="data.phoneNumber"
+                   [required]="true" name="phoneNumber" [maxlength]="50">
+                </digital-text-box>
+                <div class="errorWrapper">
+                  <div *ngIf="(data.phoneNumber == '' || data.phoneNumber == null) && isFormSubmitted" class="ion-no-padding transparent" lines="none">
+                    <div class="errorMsg">
+                      {{'FORM_ERROR.REQUIRED' | translate}}
+                    </div>
+                  </div>
+                </div>
+              </ion-col>
+
+            <ion-col size="5" offset="2">
+              <ion-row>
+                <ion-col [size]="bmReadOnly ? 12 : 9">
+                  <digital-text-box 
+                  [readonly]="bmReadOnly"
+                  [title]=" 'ADD_DATA.EMAIL_ID' " 
+                  [placeholder]=" 'ADD_DATA.EMAIL_ID_PLACEHOLDER' "
+                   [(ngModel)]="data.emailId" [(enteredText)]="data.emailId"
+                    [required]="true" name="emailId" [maxlength]="50">
+                  </digital-text-box>
+                  <div class="errorWrapper">
+                    <div *ngIf="(data.emailId == '' || data.emailId == null) && isFormSubmitted" 
+                    class="ion-no-padding transparent" lines="none">
+                      <div class="errorMsg">
+                        {{'FORM_ERROR.REQUIRED' | translate}}
+                      </div>
+                    </div>
+                  </div>
+                </ion-col>
+                <ion-col size="3" *ngIf="!bmReadOnly">
+                  <ion-button style="margin-top: 21px;padding-left: 5px;" 
+                  *ngIf="!bmReadOnly"
+                  color="tertiary" (click)="removeMoreSupp(data._id)">Remove</ion-button>
+                </ion-col>
+              </ion-row>
+                
+              </ion-col>
+
+
+
+            <!-- <ion-col size="2">
+              <ion-button style="margin-top: 27px;" 
+              *ngIf="!bmReadOnly"
+              color="tertiary" (click)="removeMoreSupp(data._id)">Remove</ion-button>
+            </ion-col> -->
+          </ion-row>
+          </form>
+          </div>
+          <ion-row *ngIf="showSupplemnetaryBool">
+            <ion-col size="12">
+              <ion-button 
+              *ngIf="!bmReadOnly"
+              color="tertiary" (click)="addMoreSupp()">ADD MORE</ion-button>
+              <!-- <pre  *ngIf="showSupplemnetaryBool">
+                Model:
+                {{additionalData.supplementaryCardData | json}}
+                Form
+                {{ arrrayForm.value | json }}
+                controls:
+                {{ arrrayForm.controls.value | json }}
+                invalid 
+                {{arrrayForm.invalid}}
+
+               </pre> -->
+            </ion-col>
+             </ion-row>
+
+<!-- 6th required credit limit -->
+          <!-- <ion-row>
+            <ion-col size="6">
+              <cs-select-layout-1 [show]="false" style="width:100% !important"
+               [title]="'ADD_DATA.REQ_CREDIT_LIMIT'"
+              [placeholder]="'ADD_DATA.REQ_CREDIT_LIMIT_PLACEHOLDER'" 
+              [data]="requiredCreditLimitDropdownArr" [valueId]="'id'"
+              [valueDesc]="'label'" (onChange)="onChangeOfRequiredCreditLimit($event)"
+              [(ngModel)]="additionalData.requiredCreditLimit" 
+              [(selectedItem)]="additionalData.requiredCreditLimit"
+              name="requiredCreditLimit" [required]="true">
+            </cs-select-layout-1>
+            <div class="errorWrapper">
+              <div *ngIf="editForm.controls?.requiredCreditLimit?.invalid && isFormSubmitted">
+                <div class="errorMsg" *ngIf="editForm.controls?.requiredCreditLimit?.errors.required">
+                  {{'FORM_ERROR.REQUIRED' | translate}}</div>
+              </div>
+            </div>
+            </ion-col>
+            <ion-col size="6">
+            </ion-col>
+          </ion-row> -->
+
+<!-- 7th suppl card and surrogate -->
+          <!-- <ion-row>
+            <ion-col size="6">
+              <cs-select-layout-1 [show]="false" style="width:100% !important"
+              [title]="'ADD_DATA.SUPPLEMENTARY_CARD'"
+             [placeholder]="'ADD_DATA.SUPPLEMENTARY_CARD_PLACEHOLDER'" 
+             [data]="supplmentaryCardDropdownArray" [valueId]="'id'"
+             [valueDesc]="'label'" (onChange)="onChangeOfSupplmentaryCard($event)"
+             [(ngModel)]="additionalData.supplmentaryCard" 
+             [(selectedItem)]="additionalData.supplmentaryCard"
+             name="supplmentaryCard" [required]="true">
+           </cs-select-layout-1>
+           <div class="errorWrapper">
+             <div *ngIf="editForm.controls?.supplmentaryCard?.invalid && isFormSubmitted">
+               <div class="errorMsg" *ngIf="editForm.controls?.supplmentaryCard?.errors.required">
+                 {{'FORM_ERROR.REQUIRED' | translate}}</div>
+             </div>
+           </div>
+            </ion-col>
+            <ion-col size="6">
+              <cs-select-layout-1 [show]="false" style="width:100% !important"
+              [title]="'ADD_DATA.SURROGATE_TYPE'"
+             [placeholder]="'ADD_DATA.SURROGATE_TYPE_PLACEHOLDER'" 
+             [data]="surrogateTypeDropdownArray" [valueId]="'id'"
+             [valueDesc]="'label'" (onChange)="onChangeOfSurrogateType($event)"
+             [(ngModel)]="additionalData.surrogateType" 
+             [(selectedItem)]="additionalData.surrogateType"
+             name="surrogateType" [required]="true">
+           </cs-select-layout-1>
+           <div class="errorWrapper">
+             <div *ngIf="editForm.controls?.surrogateType?.invalid && isFormSubmitted">
+               <div class="errorMsg" *ngIf="editForm.controls?.surrogateType?.errors.required">
+                 {{'FORM_ERROR.REQUIRED' | translate}}</div>
+             </div>
+           </div>
+            </ion-col>
+          </ion-row> -->
+
+<!-- 8th row name on card and consent for credit bureau -->
+          <!-- <ion-row>
+            <ion-col size="6">
+              <text-box [title]=" 'ADD_DATA.NAME_ON_CARD' " [placeholder]=" 'ADD_DATA.NAME_ON_CARD_PLACEHOLDER' "
+              [(ngModel)]="additionalData.nameOnCard" [(enteredText)]="additionalData.nameOnCard"
+              [required]="true" name="nameOnCard" [maxlength]="50">
+            </text-box>
+            <div class="errorWrapper">
+              <div *ngIf="editForm.controls?.nameOnCard?.invalid && isFormSubmitted"
+                class="ion-no-padding transparent" lines="none">
+                <div class="errorMsg" *ngIf="editForm.controls?.nameOnCard?.errors.required">
+                  {{'FORM_ERROR.REQUIRED' |
+                  translate}}</div>
+              </div>
+              <div class="errorMsg" *ngIf="editForm.controls?.nameOnCard?.errors?.pattern">
+                {{'FORM_ERROR.NUMBER_PATTERN'
+                | translate}}</div>
+            </div>
+            </ion-col>
+            <ion-col size="6">
+              <cs-select-layout-1 [show]="false" style="width:100% !important"
+              [title]="'ADD_DATA.CONSENT_CREDIT_BUREAU'"
+             [placeholder]="'ADD_DATA.CONSENT_CREDIT_BUREAU_PLACEHOLDER'" 
+             [data]="consentDropdownArray" [valueId]="'id'"
+             [valueDesc]="'label'" (onChange)="onChangeOfConsentForCreditBureau($event)"
+             [(ngModel)]="additionalData.consentForCreditBureau" 
+             [(selectedItem)]="additionalData.consentForCreditBureau"
+             name="consentForCreditBureau" [required]="true">
+           </cs-select-layout-1>
+           <div class="errorWrapper">
+             <div *ngIf="editForm.controls?.consentForCreditBureau?.invalid && isFormSubmitted">
+               <div class="errorMsg" *ngIf="editForm.controls?.consentForCreditBureau?.errors.required">
+                 {{'FORM_ERROR.REQUIRED' | translate}}</div>
+             </div>
+           </div>
+            </ion-col>
+          </ion-row> -->
+        </ion-grid>
+      </form>
+   
+    
+</ion-content>
+
