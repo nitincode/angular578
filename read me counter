@@ -1,0 +1,172 @@
+<form class="container" [formGroup]="form">
+
+  <h1>Order your drinks</h1>
+
+  <div class="form-control">
+    <label>Your name: </label>
+    <input type="text" placeholder="Your name" formControlName="name" />
+  </div>
+  <div class="form-control">
+    <label>Amount of white wine: </label>
+    <input type="number" formControlName="white_wine" />
+  </div>
+  <div class="form-control">
+    <label>Amount of red wine: </label>
+    <input type="number" formControlName="red_wine" />
+  </div>
+  <div class="form-control">
+    <label>Amount of beer: </label>
+    <input type="number" formControlName="beer" />
+  </div>
+  <div class="form-control">
+    <button>Place order</button>
+  </div>
+
+  <pre class="form-values">
+    {{ form.value | json }}
+  </pre>
+
+</form>
+
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent implements OnInit {
+
+  form: FormGroup;
+
+  ngOnInit(): void {
+    this.form = this.createForm();
+  }
+
+  createForm() {
+    return new FormGroup({
+      name: new FormControl(''),
+      white_wine: new FormControl(0),
+      red_wine: new FormControl(0),
+      beer: new FormControl(0)
+    });
+  }
+
+}
+
+
+
+
+
+.container {
+
+    font-family: Arial, Helvetica, sans-serif;
+    width: 50%;
+    margin: 0 auto;
+
+    .form-control {
+        margin-bottom: 10px;
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+    
+        input {
+            padding: 10px;
+            border-radius: 3px;
+            border: 1px solid darkgrey;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            color: white;
+            background: black;
+            border-radius: 3px;
+            border: 1px solid black;
+            padding: 10px;
+        }
+    }
+
+    .form-values {
+        margin-top: 30px;
+    }
+    
+}
+
+
+
+<button class="modify decrease" (click)="decrease()">-</button>
+<input type="text" readonly [value]="value" />
+<button class="modify increase" (click)="increase()">+</button>
+
+
+import { Component, OnInit, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-counter-input',
+  templateUrl: './counter-input.component.html',
+  styleUrls: ['./counter-input.component.scss']
+})
+export class CounterInputComponent implements OnInit {
+
+  @Input() min: number;
+  @Input() max: number;
+
+  value = 0;
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  increase() {
+    if (typeof this.max === 'undefined' || this.value < this.max) {
+      this.value++;
+    }
+  }
+
+  decrease() {
+    if (typeof this.min === 'undefined' || this.value > this.min) {
+      this.value--;
+    }
+  }
+
+}
+
+
+
+:host {
+  display: flex;
+
+  input {
+    padding: 10px;
+    width: calc(100% - 64px);
+    box-sizing: border-box;
+    left: 50%;
+    border: 1px solid darkgrey;
+    border-left: none;
+    border-right: none;
+  }
+
+  .modify {
+    padding: 10px;
+    border: 1px solid darkgrey;
+    font-size: 15px;
+    width: 32px;
+
+    &.decrease {
+      border-top-left-radius: 3px;
+      border-bottom-left-radius: 3px;
+    }
+
+    &.increase {
+      border-top-right-radius: 3px;
+      border-bottom-right-radius: 3px;
+    }
+  }
+}
